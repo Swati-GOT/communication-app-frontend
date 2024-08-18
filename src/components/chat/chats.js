@@ -1,0 +1,62 @@
+
+import React, { useEffect, useState } from 'react';
+import Card from 'react-bootstrap/Card';
+import './chat.css';
+import { loggedInUser } from '../../storage/userStorage';
+import { addChat, getChats } from '../../storage/chatStorage';
+
+const Chat = () => {
+  const { fullname } = loggedInUser()
+  const [message, setMessage] = useState('');
+  const [chatList, setChatList] = useState([]);
+
+  useEffect(() => {
+    const storedChats = getChats();
+    console.log(storedChats)
+    setChatList(storedChats);
+  }, []);
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+
+    if (message.trim()) {
+      const chat_message = `[${new Date().toLocaleString()}]  ${fullname}: ${message}`
+      const updatedChatList = [...chatList, chat_message];
+      setChatList(updatedChatList);
+      addChat(chat_message);
+      setMessage('');
+    }
+  };
+
+  return (
+    <>
+      <Card className='card-container'>
+        <Card.Header className='card-header'>Group Chat</Card.Header>
+        <Card.Body className="chat-list">
+          {chatList.map((chat, index) => (
+            <div key={index}>
+              <p>{chat}</p>
+            </div>
+          ))}
+        </Card.Body>
+        <Card.Footer>
+          <div>
+            <form className="chat-form" onSubmit={handleSendMessage}>
+              <label htmlFor="message">{fullname}</label>
+              <input
+                className='chat-input'
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
+              <button type="submit">Send</button>
+              <button>Refresh</button>
+            </form>
+          </div>
+        </Card.Footer>
+      </Card>
+    </>
+  );
+};
+
+export default Chat;
