@@ -6,7 +6,6 @@ const Welcome = () => {
   let isLoggedOut = false;
 
   if (location?.state?.isLoggedOut) {
-    console.log("state...", location.state)
     isLoggedOut = true
   }
 

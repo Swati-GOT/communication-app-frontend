@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 
 const LoginSuccess =() =>{
     const location = useLocation();
-    console.log("state...",location.state)
     const { email } = location.state.user || {};
 
   return (

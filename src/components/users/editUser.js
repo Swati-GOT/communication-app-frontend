@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getLoggedInUser, getUsers, updateUser } from '../../storage/userStorage';
 import { validateEmail } from '../../utils/common';
-import { useNavigate } from "react-router-dom";
-import {  getUsers, loggedInUser, updateUser } from '../../storage/userStorage';
 
 const EditUser = () => {
     const navigate = useNavigate();
     let { id } = useParams();
-    const {email} = loggedInUser();
+    const {email} = getLoggedInUser();
     const users = getUsers();
     const [user, setUser] = useState(users.find((user) => user.id == id));
     const [errors, setErrors] = useState({ fullname: "", email: "" });

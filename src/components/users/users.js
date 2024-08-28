@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import Button from 'react-bootstrap/esm/Button';
 import { useNavigate } from "react-router-dom";
+import { deleteUser, getLoggedInUser, getUsers } from '../../storage/userStorage';
 import ActionDialog from '../actionDialog';
-import { deleteUser, getUsers,loggedInUser } from '../../storage/userStorage';
 
 const User = () => {
   const [data, setData] = useState(getUsers());
   const [modalState, setModalState] = useState({ body: "", openModal: false, title: "" });
   const navigate = useNavigate();
-  const loginUser = loggedInUser() 
+  const loginUser = getLoggedInUser() 
 
 
   const handleClick = (actionType, value) => {

@@ -1,18 +1,17 @@
 
 import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
-import './chat.css';
-import { loggedInUser } from '../../storage/userStorage';
 import { addChat, getChats } from '../../storage/chatStorage';
+import { getLoggedInUser } from '../../storage/userStorage';
+import './chat.css';
 
 const Chat = () => {
-  const { fullname } = loggedInUser()
+  const { fullname } = getLoggedInUser()
   const [message, setMessage] = useState('');
   const [chatList, setChatList] = useState([]);
 
   useEffect(() => {
     const storedChats = getChats();
-    console.log(storedChats)
     setChatList(storedChats);
   }, []);
 

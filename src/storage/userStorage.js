@@ -27,8 +27,17 @@ export const getUsers = ()=> {
     return users ? JSON.parse(users) : [];
 }
 
-export const loggedInUser=()=>{
+export const getLoggedInUser=()=>{
     const loginUser = localStorage.getItem('loginUser');
     return loginUser ? JSON.parse(loginUser) : {};
+}
+
+export const login=(loginUser)=>{
+    const loginUser = localStorage.setItem("loginUser", JSON.stringify(loginUser));
+    return loginUser ? JSON.parse(loginUser) : {};
+}
+
+export const deleteLocalStorage=()=>{
+    localStorage.removeItem('loginUser');
 }
 

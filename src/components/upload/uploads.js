@@ -38,7 +38,7 @@ const Upload = () => {
   };
 
   const handlePopupAction = (params) => {
-    setData(JSON.parse(localStorage.getItem("uploads")))
+    setData(getUploads());
     setPopupState({ openPopup: false });
   };
 
@@ -47,7 +47,6 @@ const Upload = () => {
   };
 
   const handleClosePopup = () => {
-    console.log("close..........")
     setPopupState({ openPopup: false });
   };
 

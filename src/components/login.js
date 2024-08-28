@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { validateEmail } from '../utils/common';
+import { getUsers, login } from '../storage/userStorage';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,13 +39,13 @@ const Login = () => {
       return false;
     }
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const users = getUsers();
     const loginUser = users.find(function (item) {
         return user.email === item.email && user.password === item.password;
     });
-    console.log(user)
+    
     if (loginUser) {
-        localStorage.setItem("loginUser", JSON.stringify(loginUser));
+        login(loginUser);
         navigate("/login-success",{ state: { user } });
     } else {
         alert("Invalid email or password");
