@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { validateEmail } from '../../utils/common';
-import { createUser, getUsers } from '../../storage/userStorage';
+import { useDispatch } from 'react-redux';
+import { createUser } from '../../store/usersSlice';
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [user, setUser] = useState({ id:Number(new Date()),fullname: "", email: "", password: "", confirmPassword: "" });
   const [errors, setErrors] = useState({ fullname: "", email: "", password: "", confirmPassword: "" });
@@ -45,19 +47,16 @@ const Register = () => {
       return false;
     }
 
-    const users = getUsers()
-    const isUserExist = users.some((item) => item.email === user.email);
-    if (isUserExist) {
-      alert("User already exists");
-      return false;
-    }
-
     if (user.password != user.confirmPassword) {
       alert("Passwords do not match");
       return false;
     }
-    createUser(user);
-    navigate("/register-success")
+    
+    dispatch(createUser(user)).then(() => {
+      navigate("/register-success")
+    }).catch((error) => {
+      alert(error)
+    })
   }
 
   return (

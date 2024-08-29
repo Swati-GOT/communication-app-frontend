@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { getLoggedInUser } from '../storage/userStorage';
+import { getLoggedInUser, getToken } from '../storage/userStorage';
 
 const ProtectedRoute = ({ element: Element, ...rest }) => {
-  const isAuthenticated = getLoggedInUser() ? true : false
+  const isAuthenticated = getToken() ? true : false
   return isAuthenticated ? <Element {...rest} /> : <Navigate to="/" />;
 };
 

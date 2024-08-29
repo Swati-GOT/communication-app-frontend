@@ -1,19 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getLoggedInUser, getUsers, updateUser } from '../../storage/userStorage';
+import { getLoggedInUser, login } from '../../storage/userStorage';
+import { getUserById, updateUser } from '../../store/usersSlice';
 import { validateEmail } from '../../utils/common';
 
 const EditUser = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     let { id } = useParams();
-    const {email} = getLoggedInUser();
-    const users = getUsers();
-    const [user, setUser] = useState(users.find((user) => user.id == id));
+    const { email } = getLoggedInUser();
     const [errors, setErrors] = useState({ fullname: "", email: "" });
+    const [user, setUser] = useState({ fullname: "", email: "" });
+
+    useEffect(() => {
+        dispatch(getUserById(id)).then((response) => {
+            setUser(response.payload);
+        })
+    }, []);
 
     const changeHandler = (event) => {
         const { name, value } = event.target;
-     
         switch (name) {
             case "fullname":
                 errors.fullname = (value === '') ? 'Name cannot be blank' : "";
@@ -40,8 +47,12 @@ const EditUser = () => {
             alert('All fields are required');
             return false;
         }
-        updateUser(user);
-        navigate("/users")
+        dispatch(updateUser(user)).then(() => {
+            if(user.email === email) {
+                login(user);
+            }
+            navigate("/users")
+        })
     }
 
     return (

@@ -1,20 +1,26 @@
 import { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import { createUpload, editUpload, getUploadById } from '../../storage/uploadStorage';
+import { useDispatch } from 'react-redux';
+import { createUploads, createuploads, getUploadById, updateUploads } from '../../store/uploadSlice';
 import './upload.css';
 
 
 const AddUpload = (props) => {
+    const dispatch = useDispatch();
     const { openPopup, onAction, actionType, handleClose, params } = props;
-    const [upload, setUpload] = useState({ label: "", fileName: "" });
+    const [upload, setUpload] = useState({label:'', file_name:''});
     const [errors, setErrors] = useState({ label: "", fileName: "" });
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [fileName,setFileName] = useState(null);
 
     useEffect(() => {
         if (actionType === "edit") {
-            const fileData = getUploadById(params?.id)
-            setUpload({ ...fileData });
+            dispatch(getUploadById(params?.id)).then((response) => {
+                setUpload(response.payload);
+                setFileName(response.payload.file_name);
+            })
         } else {
-            setUpload({ label: "", fileName: "" });
+            setUpload({ label: "", file_name: "" });
         }
     }, [actionType, params?.id]);
 
@@ -25,10 +31,10 @@ const AddUpload = (props) => {
             case "label":
                 errors.label = (value === '') ? 'Label cannot be blank' : "";
                 break;
-            case "fileName":
-                errors.fileName = (value === '') ? 'File Name cannot be blank' : "";
+            case "file_name":
+                setSelectedFile(event.target.files[0]);
+                setFileName(event.target.files[0].name)
                 break;
-
         }
         setErrors({ ...errors })
         setUpload({ ...upload, [name]: value });
@@ -36,29 +42,40 @@ const AddUpload = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (upload.label === '' || upload.fileName === '') {
+        if (upload.label === '' || upload.file_name === '') {
             alert('All fields are required');
             return false;
         }
 
-        upload.fileName = upload.fileName.split("\\").pop();
-        if(actionType === "edit"){
-            editUpload(upload);
+        const formData = new FormData();
+        if (!selectedFile && !fileName) {
+            alert('Please select a file to upload.');
+            return false;
         }else{
-            createUpload(upload);
+            formData.append('file_name', selectedFile);
         }
         
-        onAction();
+        formData.append('label', upload.label);
+
+        if (actionType === "edit") {
+            dispatch(updateUploads({ formData, id: params?.id })).then(() => {
+                onAction();
+            })
+        } else {
+            dispatch(createUploads(formData)).then(() => {
+                onAction();
+            })
+        }
     }
 
     return (
         <>
-            <Modal className="UploadModal" show={openPopup} onHide={handleClose}>
+            <Modal className="uploadModal" show={openPopup} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Upload</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} >
                         <table >
                             <tbody>
                                 <tr>
@@ -76,9 +93,11 @@ const AddUpload = (props) => {
                                         <label className="input-label" htmlFor="fileName">File Name</label>
                                     </td>
                                     <td>
-                                        <input className="input-class" type="file" id="fileName" name="fileName" onChange={changeHandler} />
+                                        <input className="input-class" type="file" id="file_ame" name="file_name" onChange={changeHandler} />
+                                        <span className="file-name" id='file-text'>{fileName}</span>
                                         <p className='error-message'>{errors.fileName}</p>
                                     </td>
+                                    
                                 </tr>
                             </tbody>
                         </table>

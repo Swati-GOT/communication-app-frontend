@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { validateEmail } from '../utils/common';
-import { getUsers, login } from '../storage/userStorage';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../store/usersSlice';
+import { setCookieData, login } from '../storage/userStorage';
 
 const Login = () => {
   const navigate = useNavigate();
-
-  const [user, setUser] = useState({ });
-  const [errors, setErrors] = useState({  });
+  const dispatch = useDispatch()
+  const [user, setUser] = useState({});
+  const [errors, setErrors] = useState({});
 
   const changeHandler = (event) => {
     const { name, value } = event.target;
@@ -34,23 +36,25 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if( user.email === '' || user.password === ''){
+    if (user.email === '' || user.password === '') {
       alert('All fields are required');
       return false;
     }
 
-    const users = getUsers();
-    const loginUser = users.find(function (item) {
-        return user.email === item.email && user.password === item.password;
-    });
-    
-    if (loginUser) {
-        login(loginUser);
-        navigate("/login-success",{ state: { user } });
+    if (user) {
+      dispatch(loginUser(user)).then((response) => {
+        if (!response.payload?.token) {
+          alert("Invalid email or password");
+        } else {
+          const { token, user } = response.payload
+          login(user)
+          setCookieData("token", token);
+          navigate("/login-success", { state: { user } });
+        }
+      })
     } else {
-        alert("Invalid email or password");
+      alert("Invalid email or password");
     }
-    
   }
 
   return (

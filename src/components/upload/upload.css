@@ -6,13 +6,17 @@
     width: 100px;          
     text-align: center;   
 }
-.UploadModal .modal-header{
+.uploadModal .modal-header{
     justify-content: center!important;
     padding: 0%!important;
 }
-.UploadModal .modal-title{
+.uploadModal .modal-title{
     margin: auto !important;
 }
-.UploadModal .btn-close{
+.uploadModal .btn-close{
     margin: 0 !important;
+}
+.download-link{
+    cursor: 'pointer';
+    text-decoration: underline;
 }

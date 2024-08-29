@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 export const createUser = (user) => {
     const users = getUsers();
     users.push(user);
@@ -32,12 +34,29 @@ export const getLoggedInUser=()=>{
     return loginUser ? JSON.parse(loginUser) : {};
 }
 
-export const login=(loginUser)=>{
-    const loginUser = localStorage.setItem("loginUser", JSON.stringify(loginUser));
+export const login=(user)=>{
+    const loginUser = localStorage.setItem("loginUser", JSON.stringify(user));
     return loginUser ? JSON.parse(loginUser) : {};
 }
 
 export const deleteLocalStorage=()=>{
     localStorage.removeItem('loginUser');
+    deleteCookieData('token');
+}
+
+export const setCookieData = (key, value) => {
+    Cookies.set(key, value, { expires: 1});
+}
+
+export const getCookieData = (key) => {
+    return Cookies.get(key);
+}
+
+export const deleteCookieData = (key) => {
+    Cookies.remove(key);
+}
+
+export const getToken = () => {
+    return getCookieData("token");
 }
 

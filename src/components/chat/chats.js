@@ -1,30 +1,57 @@
 
 import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
-import { addChat, getChats } from '../../storage/chatStorage';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { getLoggedInUser } from '../../storage/userStorage';
+import { createChat, fetchChats } from '../../store/chatSlice';
 import './chat.css';
 
 const Chat = () => {
-  const { fullname } = getLoggedInUser()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { fullname, id } = getLoggedInUser()
   const [message, setMessage] = useState('');
   const [chatList, setChatList] = useState([]);
 
   useEffect(() => {
-    const storedChats = getChats();
-    setChatList(storedChats);
+    getAllChats();
   }, []);
+
+  const getAllChats = () => {
+    dispatch(fetchChats()).then((response) => {
+      if (response.payload.status) {
+        alert(response.payload?.message)
+        navigate("/");
+      } else {
+        const data = response?.payload;
+        setChatList(data.map((chat) => `[${chat.createdAt.toLocaleString()}]  ${chat.User?.fullname}: ${chat.message}`))
+      }
+    })
+  }
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-
-    if (message.trim()) {
-      const chat_message = `[${new Date().toLocaleString()}]  ${fullname}: ${message}`
-      const updatedChatList = [...chatList, chat_message];
-      setChatList(updatedChatList);
-      addChat(chat_message);
-      setMessage('');
+    if (!message.trim()) {
+      alert('Please enter a message');
+      return false;
     }
+    const chatData = {
+      message: message.trim(),
+      userId: id,
+      username: fullname
+    }
+    dispatch(createChat(chatData)).then(() => {
+      getAllChats();
+      setMessage('');
+    })
+    // if (message.trim()) {
+    //   const chat_message = `[${new Date().toLocaleString()}]  ${fullname}: ${message}`
+    //   const updatedChatList = [...chatList, chat_message];
+    //   setChatList(updatedChatList);
+    //   addChat(chat_message);
+    //   setMessage('');
+    // }
   };
 
   return (
