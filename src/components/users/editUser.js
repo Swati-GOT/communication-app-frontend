@@ -48,7 +48,7 @@ const EditUser = () => {
             return false;
         }
         dispatch(updateUser(user)).then(() => {
-            if(user.email === email) {
+            if (user.email === email) {
                 login(user);
             }
             navigate("/users")

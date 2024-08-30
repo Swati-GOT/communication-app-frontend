@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import { validateEmail } from '../../utils/common';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 import { createUser } from '../../store/usersSlice';
+import { validateEmail } from '../../utils/common';
 
 const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [user, setUser] = useState({ id:Number(new Date()),fullname: "", email: "", password: "", confirmPassword: "" });
+  const [user, setUser] = useState({ id: Number(new Date()), fullname: "", email: "", password: "", confirmPassword: "" });
   const [errors, setErrors] = useState({ fullname: "", email: "", password: "", confirmPassword: "" });
 
   const changeHandler = (event) => {
@@ -42,7 +42,7 @@ const Register = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if(user.fullname === '' || user.email === '' || user.password === '' || user.confirmPassword === ''){
+    if (user.fullname === '' || user.email === '' || user.password === '' || user.confirmPassword === '') {
       alert('All fields are required');
       return false;
     }
@@ -51,7 +51,7 @@ const Register = () => {
       alert("Passwords do not match");
       return false;
     }
-    
+
     dispatch(createUser(user)).then(() => {
       navigate("/register-success")
     }).catch((error) => {

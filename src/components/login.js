@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import { validateEmail } from '../utils/common';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+import { login, setCookieData } from '../storage/userStorage';
 import { loginUser } from '../store/usersSlice';
-import { setCookieData, login } from '../storage/userStorage';
+import { validateEmail } from '../utils/common';
 
 const Login = () => {
   const navigate = useNavigate();

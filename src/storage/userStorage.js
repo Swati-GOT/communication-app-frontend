@@ -24,28 +24,28 @@ export const deleteUser = (id) => {
     }
 }
 
-export const getUsers = ()=> {
+export const getUsers = () => {
     const users = localStorage.getItem('users');
     return users ? JSON.parse(users) : [];
 }
 
-export const getLoggedInUser=()=>{
+export const getLoggedInUser = () => {
     const loginUser = localStorage.getItem('loginUser');
     return loginUser ? JSON.parse(loginUser) : {};
 }
 
-export const login=(user)=>{
+export const login = (user) => {
     const loginUser = localStorage.setItem("loginUser", JSON.stringify(user));
     return loginUser ? JSON.parse(loginUser) : {};
 }
 
-export const deleteLocalStorage=()=>{
+export const deleteLocalStorage = () => {
     localStorage.removeItem('loginUser');
     deleteCookieData('token');
 }
 
 export const setCookieData = (key, value) => {
-    Cookies.set(key, value, { expires: 1});
+    Cookies.set(key, value, { expires: 1 });
 }
 
 export const getCookieData = (key) => {

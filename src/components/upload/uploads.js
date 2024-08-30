@@ -1,33 +1,21 @@
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/esm/Button';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import { deleteUpload, downloadFile, fetchuploads } from '../../store/uploadSlice';
 import ActionDialog from '../actionDialog';
 import AddUpload from './addUpload';
-import { useDispatch } from 'react-redux';
-import { fetchuploads, deleteUpload, downloadFile } from '../../store/uploadSlice';
 
 const Upload = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-
   const [modalState, setModalState] = useState({ body: "", openModal: false, title: "" });
   const [popupState, setPopupState] = useState({ openPopup: false });
 
   useEffect(() => {
     getUploads();
-    // dispatch(fetchuploads()).then((response) => {
-    //   if(response.payload.status){
-    //     alert(response.payload?.message)
-    //     navigate("/");
-    //   }else{
-    //     setLoading(false);
-    //     setData(response?.payload)
-    //   }
-    // }).catch((error) => {
-    //   alert(error)
-    // })
   }, []);
 
   const getUploads = () => {
@@ -65,7 +53,6 @@ const Upload = () => {
       alert(error)
     })
   };
-
   const handleOpenModal = (body, title, params) => {
     setModalState({ body, openModal: true, title, params: params });
   };
@@ -92,7 +79,6 @@ const Upload = () => {
       window.location.href = `${process.env.REACT_APP_API_URL}/download/${file_name}`;
     })
   }
-
 
   return <>
     <div className="d-flex justify-content-end mt-3">

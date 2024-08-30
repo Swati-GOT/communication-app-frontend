@@ -2,8 +2,8 @@ export const createUpload = (upload) => {
     const uploads = localStorage.getItem("uploads") ? JSON.parse(localStorage.getItem("uploads")) : [];
     const isFileExist = uploads.some((item) => item.fileName === upload.fileName);
     if (isFileExist) {
-       alert("File already exists");
-       return;
+        alert("File already exists");
+        return;
     }
     const newUpload = { ...upload, id: Number(new Date()) };
     uploads.push(newUpload);
@@ -17,8 +17,8 @@ export const editUpload = (upload) => {
     if (index > -1) {
         const isFileExist = uploads.some((item) => item.fileName === upload.fileName && item.id != upload.id);
         if (isFileExist) {
-        alert("File already exists");
-        return;
+            alert("File already exists");
+            return;
         }
         uploads[index] = upload;
         localStorage.setItem("uploads", JSON.stringify(uploads));

@@ -45,13 +45,7 @@ const Chat = () => {
       getAllChats();
       setMessage('');
     })
-    // if (message.trim()) {
-    //   const chat_message = `[${new Date().toLocaleString()}]  ${fullname}: ${message}`
-    //   const updatedChatList = [...chatList, chat_message];
-    //   setChatList(updatedChatList);
-    //   addChat(chat_message);
-    //   setMessage('');
-    // }
+
   };
 
   return (
@@ -76,7 +70,6 @@ const Chat = () => {
                 onChange={(e) => setMessage(e.target.value)}
               />
               <button type="submit">Send</button>
-              <button>Refresh</button>
             </form>
           </div>
         </Card.Footer>

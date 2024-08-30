@@ -1,5 +1,5 @@
 
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { getToken } from '../storage/userStorage';
 import { handleErrorResponse } from '../utils/common';
@@ -23,8 +23,8 @@ export const fetchuploads = createAsyncThunk('uploads/fetchUploads', async () =>
 
 // Create a new upload
 export const createUploads = createAsyncThunk('/createuploads', async (newUpload) => {
-    const response = await axios.post(baseUrl, newUpload,{
-        headers:{
+    const response = await axios.post(baseUrl, newUpload, {
+        headers: {
             "Content-Type": "multipart/form-data",
             'Authorization': `${getToken()}`,
         }
@@ -35,16 +35,15 @@ export const createUploads = createAsyncThunk('/createuploads', async (newUpload
 // Update an existing uploads
 export const updateUploads = createAsyncThunk('uploads/updateUpload', async (updatedData) => {
     const { id, formData } = updatedData;
-    
+
     const response = await axios.put(`${baseUrl}/${id}`, formData, {
-        headers:{
+        headers: {
             "Content-Type": "multipart/form-data",
             'Authorization': `${getToken()}`,
         }
     }
     );
     return response.data;
-    return null;
 });
 
 export const getUploadById = createAsyncThunk('uploads/getUploadById', async (id) => {

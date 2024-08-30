@@ -1,12 +1,11 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import Nav from 'react-bootstrap/Nav';
 import { Button } from '@mui/material';
-import '../css/Navbar.css';
 import NavItem from 'react-bootstrap/esm/NavItem';
+import Nav from 'react-bootstrap/Nav';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import '../css/Navbar.css';
 import { deleteLocalStorage } from '../storage/userStorage';
 const Menu = () => {
     const navigate = useNavigate();
-
     const handleLogout = () => {
         deleteLocalStorage();
         navigate("/", { state: { isLoggedOut: true } });

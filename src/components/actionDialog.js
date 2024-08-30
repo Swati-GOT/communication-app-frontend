@@ -6,26 +6,25 @@ import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 
 const ActionDialog = (props) => {
-    const { 
+    const {
         title,
-         body, 
-         openModal, 
-         onCloseModal,
-         onAction,
-         params 
-        } = props;
+        body,
+        openModal,
+        onCloseModal,
+        onAction,
+        params
+    } = props;
     const [show, setShow] = useState(false);
 
     useEffect(() => {
         if (title) {
             setShow(true);
         }
-    }, [title,params]);
-
+    }, [title, params]);
 
     const handleSubmit = () => {
         onAction(params);
-      };
+    };
 
     return (
         <div>
@@ -37,7 +36,7 @@ const ActionDialog = (props) => {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => handleSubmit()} color="primary">
-                           OK
+                            OK
                         </Button>
                         <Button onClick={onCloseModal} color="primary" autoFocus>
                             Cancel

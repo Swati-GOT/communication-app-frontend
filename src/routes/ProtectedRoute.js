@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { getLoggedInUser, getToken } from '../storage/userStorage';
+import { getToken } from '../storage/userStorage';
 
 const ProtectedRoute = ({ element: Element, ...rest }) => {
   const isAuthenticated = getToken() ? true : false

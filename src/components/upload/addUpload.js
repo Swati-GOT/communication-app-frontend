@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { useDispatch } from 'react-redux';
-import { createUploads, createuploads, getUploadById, updateUploads } from '../../store/uploadSlice';
+import { createUploads, getUploadById, updateUploads } from '../../store/uploadSlice';
 import './upload.css';
-
 
 const AddUpload = (props) => {
     const dispatch = useDispatch();
     const { openPopup, onAction, actionType, handleClose, params } = props;
-    const [upload, setUpload] = useState({label:'', file_name:''});
+    const [upload, setUpload] = useState({ label: '', file_name: '' });
     const [errors, setErrors] = useState({ label: "", fileName: "" });
     const [selectedFile, setSelectedFile] = useState(null);
-    const [fileName,setFileName] = useState(null);
+    const [fileName, setFileName] = useState(null);
 
     useEffect(() => {
         if (actionType === "edit") {
@@ -51,10 +50,10 @@ const AddUpload = (props) => {
         if (!selectedFile && !fileName) {
             alert('Please select a file to upload.');
             return false;
-        }else{
+        } else {
             formData.append('file_name', selectedFile);
         }
-        
+
         formData.append('label', upload.label);
 
         if (actionType === "edit") {
@@ -94,10 +93,10 @@ const AddUpload = (props) => {
                                     </td>
                                     <td>
                                         <input className="input-class" type="file" id="file_ame" name="file_name" onChange={changeHandler} />
-                                        <span className="file-name" id='file-text'>{fileName}</span>
+                                        {/* <span className="file-name" id='file-text'>{fileName}</span> */}
                                         <p className='error-message'>{errors.fileName}</p>
                                     </td>
-                                    
+
                                 </tr>
                             </tbody>
                         </table>

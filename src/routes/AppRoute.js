@@ -1,17 +1,17 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from '../components/login';
-import Menu from '../components/menu';
-import Welcome from '../components/welcome';
-import Register from '../components/users/register';
-import User from '../components/users/users';
-import Upload from '../components/upload/uploads';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Chat from '../components/chat/chats';
-import EditUser from '../components/users/editUser';
-import ProtectedRoute from './ProtectedRoute';
+import Login from '../components/login';
 import LoginSuccess from '../components/loginSuccess';
-import RegisterSuccess from '../components/users/registerSuccess';
+import Menu from '../components/menu';
 import PageNotFound from '../components/PageNotFound';
+import Upload from '../components/upload/uploads';
+import EditUser from '../components/users/editUser';
+import Register from '../components/users/register';
+import RegisterSuccess from '../components/users/registerSuccess';
+import User from '../components/users/users';
+import Welcome from '../components/welcome';
+import ProtectedRoute from './ProtectedRoute';
 const AppRoute = () => {
 
     return (
@@ -21,11 +21,11 @@ const AppRoute = () => {
                 <Route path="/" element={<Menu />}>
                     <Route
                         path="users"
-                        element={<ProtectedRoute element={User}/>}
+                        element={<ProtectedRoute element={User} />}
                     />
                     <Route
                         path="users/edituser/:id"
-                        element={<ProtectedRoute element={EditUser}/>}
+                        element={<ProtectedRoute element={EditUser} />}
                     />
                     <Route
                         path="uploads"
@@ -33,11 +33,11 @@ const AppRoute = () => {
                     />
                     <Route
                         path="chats"
-                        element={<ProtectedRoute element={Chat}/>}
+                        element={<ProtectedRoute element={Chat} />}
                     />
                     <Route
                         path="login-success"
-                        element={<ProtectedRoute element={LoginSuccess}/>}
+                        element={<ProtectedRoute element={LoginSuccess} />}
                     />
                 </Route>
                 <Route path="*" element={<PageNotFound />} />
